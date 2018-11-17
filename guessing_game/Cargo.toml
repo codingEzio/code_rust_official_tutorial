@@ -5,3 +5,4 @@ authors = ["Ezio <assassinste@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+rand = "0.3.14"     # versions >= 0.3.14 and <= 0.4.0
