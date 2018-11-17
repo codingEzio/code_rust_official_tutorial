@@ -1,9 +1,29 @@
+/*
+    Even wonder how to use it?
+        -> Type 'cargo doc --open' 
+        -> then it'll build docs locally for you. 
+    
+    Note
+        The content depends on what u declared in the .toml
+*/
+extern crate rand;
+
 use std::io;
+use std::cmp::Ordering;
+use rand::Rng;
 
 fn main() {
     /* Do using the 'cargo check' all along! XD. */
 
     println!("Guess the num!");
+
+    /*
+        Rust could infer that it's a number.
+        The type defaults to 'i32' (while we got other types)
+    */
+    let secret_num = rand::thread_rng().gen_range(1, 21);
+    
+    println!("The secret num is: {}", secret_num);
 
     println!("Please input ur guess.");
 
@@ -32,7 +52,7 @@ fn main() {
             use std::io::stdin  =>           stdin
 
         Verbose is accepted. 
-            Typing 'use std::io::stdin'
+            Having 'use std::io::stdin',
             Invoke 'std::io::stdin' is still ACCEPTED.
 
         Let's break down the rest of them. 
@@ -56,5 +76,18 @@ fn main() {
         .read_line(&mut guess)
         .expect("Failed to read line");  // (hardly) optional 
 
+    // Convert its type ('guess') before comparing. (? reassign)
+    let guess: u32 = guess
+        .trim()
+        .parse()
+        .expect("Please type a number!");
+
     println!("You guessed: {}", guess);
+
+    // Freaking elegant!
+    match guess.cmp(&secret_num) {
+        Ordering::Less      => println!("Too small"),
+        Ordering::Greater   => println!("Too big"),
+        Ordering::Equal     => println!("You win"),
+    };
 }
