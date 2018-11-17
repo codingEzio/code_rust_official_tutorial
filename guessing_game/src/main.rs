@@ -23,7 +23,8 @@ fn main() {
     */
     let secret_num = rand::thread_rng().gen_range(1, 21);
     
-    println!("The secret num is: {}.", secret_num);
+    // Ya better comment this line, XD
+    // println!("The secret num is: {}.", secret_num);
     
     loop {
 
@@ -78,11 +79,21 @@ fn main() {
             .read_line(&mut guess)
             .expect("Failed to read line.");  // (hardly) optional 
 
-        // Convert its type ('guess') before comparing. (? reassign)
-        let guess: u32 = guess
-            .trim()
-            .parse()
-            .expect("Please type a number!");
+        /* 
+            Convert its type ('guess') before comparing. (? reassign)
+        
+            <later-added>
+                'match' stmt for variable assignment! 
+        */
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) =>  num,   
+
+            /* 
+                [0] The '_' is similar to 'except Exception'
+                [1] The 'continue' let the code go into the next loop
+            */ 
+            Err(_)  =>  continue,   
+        };
 
         println!("\nYou guessed: {}", guess);
 
