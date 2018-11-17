@@ -23,71 +23,78 @@ fn main() {
     */
     let secret_num = rand::thread_rng().gen_range(1, 21);
     
-    println!("The secret num is: {}", secret_num);
+    println!("The secret num is: {}.", secret_num);
+    
+    loop {
 
-    println!("Please input ur guess.");
+        println!("\nPlease input ur guess.");
 
-    /* 
-        Var are immutable by default. 
-        i.e. 
-            let     foo = 5  // immutable 
-            let mut foo = 5  //   mutable 
+        /* 
+            Var are immutable by default. 
+            i.e. 
+                let     foo = 5  // immutable 
+                let mut foo = 5  //   mutable 
 
-        Also, about the right-handed expr
-        i.e. 
-            String      A string type (there's 3 more)
-            ::new       A static method of 'String' 
+            Also, about the right-handed expr
+            i.e. 
+                String      A string type (there's 3 more)
+                ::new       A static method of 'String' 
 
-        In short, 'String::new()'
-            => Create a instance of 'String' type 
-            => then calling the String's "new" (static method) 
-    */
-    let mut guess = String::new();  
+            In short, 'String::new()'
+                => Create a instance of 'String' type 
+                => then calling the String's "new" (static method) 
+        */
+        let mut guess = String::new();  
 
-    /*
-        Similar to the 'import' stmt in other langs,
-        e.g. 
-            use std;            =>  std::io::stdin
-            use std::io         =>       io::stdin 
-            use std::io::stdin  =>           stdin
+        /*
+            Similar to the 'import' stmt in other langs,
+            e.g. 
+                use std;            =>  std::io::stdin
+                use std::io         =>       io::stdin 
+                use std::io::stdin  =>           stdin
 
-        Verbose is accepted. 
-            Having 'use std::io::stdin',
-            Invoke 'std::io::stdin' is still ACCEPTED.
+            Verbose is accepted. 
+                Having 'use std::io::stdin',
+                Invoke 'std::io::stdin' is still ACCEPTED.
 
-        Let's break down the rest of them. 
-        i.e. 
-            .read_line()   
-                => &mut     mutablize the variable 'guess' (it's a ref.) 
-                => guess    #TODO explain later (rust-18e-Chapter04)
-            
-            .expect()
-                => like a::b().c()
-                    return a val which its type is "io::Result"
-                    and itself is an 'Enum' contains 'Ok' and 'Err'.
+            Let's break down the rest of them. 
+            i.e. 
+                .read_line()   
+                    => &mut     mutablize the var 'guess'
+                    => guess    #TODO explain later (rust-18e-cp04)
                 
-                => So what u actually called 
-                    is this one 'io::Result().expect()'
-                
-                => Is it 'error handling' ? 
-                    not really, we'll see this later
-     */
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");  // (hardly) optional 
+                .expect()
+                    => like a::b().c()
+                        return a val which its type is "io::Result"
+                        and itself is an 'Enum' contains 'Ok' and 'Err'.
+                    
+                    => So what u actually called 
+                        is this one 'io::Result().expect()'
+                    
+                    => Is it 'error handling' ? 
+                        not really, we'll see this later
+        */
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line.");  // (hardly) optional 
 
-    // Convert its type ('guess') before comparing. (? reassign)
-    let guess: u32 = guess
-        .trim()
-        .parse()
-        .expect("Please type a number!");
+        // Convert its type ('guess') before comparing. (? reassign)
+        let guess: u32 = guess
+            .trim()
+            .parse()
+            .expect("Please type a number!");
 
-    println!("You guessed: {}", guess);
+        println!("\nYou guessed: {}", guess);
 
-    // Freaking elegant!
-    match guess.cmp(&secret_num) {
-        Ordering::Less      => println!("Too small"),
-        Ordering::Greater   => println!("Too big"),
-        Ordering::Equal     => println!("You win"),
-    };
+        // Freaking elegant!
+        match guess.cmp(&secret_num) {
+            Ordering::Less      => println!("-> Too small"),
+            Ordering::Greater   => println!("-> Too big"),
+            Ordering::Equal     => {
+                println!("-> You win!");
+                break;
+            }
+        };
+
+    }
 }
