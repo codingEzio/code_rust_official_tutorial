@@ -156,7 +156,7 @@ fn why_ownership() {
             | then store the 'yo ...' onto the 'heap'
 
             Three things were related to this: 
-                => Pointer      starting addr on memory 
+                => Pointer      Starting helper addr on memory 
                 => Length       how much mem it was using (in bytes)
                 => Capacity     the total mem was allocated  
 
@@ -300,7 +300,7 @@ fn ownership_for_func_param() {
                                                 // [5] 'a_string' no longer exists
 }
 
-/* Starting of <ownership_for_func_param> */
+/* Starting helper of <ownership_for_func_param> */
 fn take_ownership(some_str: String) {           // [2] came in  
     println!("--- [{}]", some_str);             // [3] using it 
 }                                               // [4] mem's freed (`drop` called)
@@ -308,7 +308,7 @@ fn take_ownership(some_str: String) {           // [2] came in
 fn make_copy(some_int: i32) {
     println!("--- [{}]", some_int);
 }
-/* Ending of <ownership_for_func_param> */
+/* Ending helper of <ownership_for_func_param> */
 
 
 fn ownership_for_func_return() {
@@ -319,7 +319,7 @@ fn ownership_for_func_return() {
     let t2 = take_and_give_back(t1);        // above => func => here 
 }
 
-/* Starting of <ownership_for_func_return> */
+/* Starting helper of <ownership_for_func_return> */
 fn give_ownership() -> String {
     let some_str = String::from("Hallo, ich bin Karl.");
     some_str
@@ -328,7 +328,7 @@ fn give_ownership() -> String {
 fn take_and_give_back(a_str: String) -> String {
     a_str
 }
-/* Ending of <ownership_for_func_return> */
+/* Ending helper of <ownership_for_func_return> */
 
 
 fn ownership_for_func_return_multi_val() {
@@ -340,10 +340,10 @@ fn ownership_for_func_return_multi_val() {
     println!("--- [{}] [{}]", s2, len); 
 }
 
-/* Starting of <ownership_for_func_return_multi_val> */
+/* Starting helper of <ownership_for_func_return_multi_val> */
 fn calc_len(s: String) -> (String, usize) {
     let length = s.len(); 
 
     (s, length)
 }
-/* Ending of <ownership_for_func_return_multi_val> */
+/* Ending helper of <ownership_for_func_return_multi_val> */
