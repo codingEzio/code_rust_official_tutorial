@@ -1,0 +1,7 @@
+[package]
+name = "example_prog_using_structs"
+version = "0.1.0"
+authors = ["Ezio <assassinste@gmail.com>"]
+edition = "2018"
+
+[dependencies]
