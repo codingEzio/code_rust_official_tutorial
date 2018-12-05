@@ -1,18 +1,19 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
+
+use std::net::{Ipv4Addr, Ipv6Addr};
+
 fn main() {
+    enum_start();
+    enum_with_struct();
 
-    /*
-        Down below we're using "IP Address" to take examples.
+    enum_def_with_type();
+    enum_similarity_to_struct();
 
-        To be clear, there's already a impl at
-            https://doc.rust-lang.org/std/net/enum.IpAddr.html
-    */
+    option_enum_and_none_in_rust();
 }
 
 fn enum_start() {
-    /* Syntax, variants, param, arg */
-
     enum IPAddrKind {
         V4,
         V6,
@@ -30,8 +31,6 @@ fn enum_start() {
 }
 
 fn enum_with_struct() {
-    /* If using existed knowledge for now */
-
     #[derive(Debug)]
     enum IPAddrKind {
         V4,
@@ -50,34 +49,31 @@ fn enum_with_struct() {
     };
 }
 
-fn enum_type_contained() {
-    /* This one no longer needs a struct! */
-
+fn enum_def_with_type() {
     #[derive(Debug)]
-    enum IpAddr {
-        V4(String),
-        V6(String),
-    }
-
-    enum IpAddrAwesome {
+    enum MyIpAddr {
         V4(u8, u8, u8, u8),
         V6(String),
     }
 
-    // Hmm
-    let v4 = IpAddr::V4(String::from("1.1.1.1"));
-    let v6_loopback = IpAddr::V6(String::from("::1"));
+    let v4 = MyIpAddr::V4(10, 115, 176, 11);
+    let v6 = MyIpAddr::V6(String::from("::1"));
 
-    // Ja
-    let va4 = IpAddrAwesome::V4(10, 115, 176, 11);
+    // standard library also provided one :P
+    let stdv4 = Ipv4Addr::new(10, 115, 30, 25);
+    let stdv6 = Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0x01);
+
+    println!("Mine: \n\t{:?}\n\t{:?}", v4, v6);
+    println!("Std: \n\t{}\n\t{}", stdv4, stdv6);
 }
 
 fn enum_similarity_to_struct() {
+    #[derive(Debug)]
     enum Message {
         Quit,                       // no data associated
         Move { x: i32, y: i32 },    // anonymous struct
-        Write(String),              // one string val
-        ChangeColor(i32, i32, i32), // three val (?param)
+        Write(String),              // enum item: 1 str
+        ChangeColor(i32, i32, i32), // enum item: 3 int
     }
 
     // if using `struct`
@@ -92,17 +88,59 @@ fn enum_similarity_to_struct() {
     // define methods
     impl Message {
         fn greeting(&self) {
-            // pass
+            println!("{:?}", &self);
         }
     }
 
-    let em = Message::Write(String::from("Hey"));
-    em.greeting();
+    // Just a string (in case u've forget it)
+    let m = Message::Write(String::from("Hey"));
+
+    m.greeting();
 }
 
-fn option_enum_basic() {
+fn option_enum_and_none_in_rust() {
+    /*
+        Rust doesn't have 'None'.
+        Instead, it provides another way
+            | to indicate whether the val exists or not
+            | which this is also the reason why 'None' exists
 
-    /* 
-        https://doc.rust-lang.org/book/2018-edition/ch06-01-defining-an-enum.html#the-option-enum-and-its-advantages-over-null-values
+        It was impl as an `enum` (i.e. Option<T>).
+            -> The "T" used in here is a new concept
+            -> we'll talk about this later #TODO till cp10
+    
+        Btw, it was brought into scope automatically :P
+    */
+
+    #[derive(Debug)]
+    enum MyOption<T> {
+        Some(T), // The 'T' could be any type
+        None,
+    }
+
+    let some_num = Some(5);
+    let some_str = Some("a str");
+
+    /*
+        `None` in Rust is quite special,
+            -> ya must specify its type (i.e. Option)
+
+        How to use it 
+            -> If the val is possibly none, then u should use it 
+            -> It's kinda split 'null' & else into two worlds :P 
+        
+        Also, there's a quote backing my words 
+            | This was a deliberate design decision for Rust 
+                -> to limit null’s pervasiveness
+                -> and increase the safety of Rust code.
+    */
+    let where_ru: Option<i32> = None;
+
+    /*
+        We barely touched the 
+            surface of `enum` & related `Option`. 
+
+        Umm, that's all. 
+        Let's continue the next section! (`Match`)
     */
 }
